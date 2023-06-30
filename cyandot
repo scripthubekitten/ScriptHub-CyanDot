@@ -1,17 +1,52 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/scripthubekitten/qtoolv3/main/qtoolv3", true))()
+getgenv().keytoclick = "Q"
+tool = Instance.new("Tool")
+tool.RequiresHandle = false
+tool.Name = keytoclick
+tool.Activated:connect(function()
+    local vim = game:service("VirtualInputManager")
+vim:SendKeyEvent(true, keytoclick, false, game)
+end)
+tool.Parent = game.Players.LocalPlayer.Backpack
 
-getgenv().Key = Enum.KeyCode.Q
+game.StarterGui:SetCore("SendNotification", {
+    Title = "backup#6002 .gg/productions";
+    Text = "join .gg/productions";
+
+})
+
+local player = game.Players.LocalPlayer
+
+local function connectCharacterAdded()
+    player.CharacterAdded:Connect(onCharacterAdded)
+end
+
+connectCharacterAdded()
+
+player.CharacterRemoving:Connect(function()
+    tool.Parent = game.Players.LocalPlayer.Backpack
+end)
+
+--[[
+███████╗██╗░░░░░░█████╗░░██████╗██╗░░██╗░██╗░░░░░░░██╗
+██╔════╝██║░░░░░██╔══██╗██╔════╝██║░░██║░██║░░██╗░░██║
+█████╗░░██║░░░░░███████║╚█████╗░███████║░╚██╗████╗██╔╝
+██╔══╝░░██║░░░░░██╔══██║░╚═══██╗██╔══██║░░████╔═████║░
+██║░░░░░███████╗██║░░██║██████╔╝██║░░██║░░╚██╔╝░╚██╔╝░
+╚═╝░░░░░╚══════╝╚═╝░░╚═╝╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░
+
+]]
+    getgenv().Key = Enum.KeyCode.Q
 getgenv().Prediction = 0.1416
     getgenv().Partz = "LowerTorso" -- LowerTorso, HumanoidRootPart,Head,UpperTorso
 
-
+    
         local Locking = false
     local Draw = Drawing.new
 local Square = Drawing.new("Square")
 Square.Visible = false
 Square.Color = Color3.fromRGB(0, 255, 255)
 Square.Thickness = 20
-Square.Size = Vector2.new(15,15)
+Square.Size = Vector2.new(20,20)
 Square.Filled = true
 
     game:GetService("UserInputService").InputBegan:Connect(function(keygo,ok)
@@ -21,9 +56,9 @@ Square.Filled = true
                if Locking then
                Plr =  getClosestPlayerToCursor()
 elseif not Locking then
+        
 
-
-
+         
 end
 end
 end
@@ -46,21 +81,21 @@ end)
     end
 
     local rawmetatable = getrawmetatable(game)
-    local old = rawmetatable.namecall
+    local old = rawmetatable.__namecall
     setreadonly(rawmetatable, false)
-    rawmetatable.namecall = newcclosure(function(...)
+    rawmetatable.__namecall = newcclosure(function(...)
         local args = {...}
         if Locking and getnamecallmethod() == "FireServer" and args[2] == "GetMousePos" then
-            args[3] = Plr.Character[getgenv().Partz].Position+(Plr.Character[getgenv().Partz].VelocityPrediction)
+            args[3] = Plr.Character[getgenv().Partz].Position+(Plr.Character[getgenv().Partz].Velocity*Prediction)
             return old(unpack(args))
         end
         return old(...)
     end)
-
-
+    
+    
 game.RunService.Stepped:Connect(function()
     if Plr ~= nil and Locking then
-         local Vector, OnScreen = workspace.CurrentCamera:worldToViewportPoint(Plr.Character[getgenv().Partz].Position+(Plr.Character[getgenv().Partz].VelocityPrediction))
+         local Vector, OnScreen = workspace.CurrentCamera:worldToViewportPoint(Plr.Character[getgenv().Partz].Position+(Plr.Character[getgenv().Partz].Velocity*Prediction))
          if OnScreen then
         Square.Visible = true
         Square.Position = Vector2.new(Vector.X,Vector.Y)
@@ -68,7 +103,7 @@ game.RunService.Stepped:Connect(function()
         elseif not Locking then
             Square.Visible = false
         end
-
+        
     end)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/scripthubekitten/dahoodios/main/hoodcustomfly", true))()
